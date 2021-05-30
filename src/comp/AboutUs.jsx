@@ -2,7 +2,8 @@
 import { Typography } from '@material-ui/core';
 import { GrInstagram, GrLinkedin, GrGithub } from 'react-icons/gr';
 import Radium, {StyleRoot} from 'radium';
-import { rubberBand} from 'react-animations'
+import { rubberBand, flash} from 'react-animations'
+import bg from '../img/img.jpg';
 
 
 
@@ -11,7 +12,8 @@ let AboutUs = ()=>{
     const style = {
         main:{
             display:'grid',
-            justifyItems:'center'
+            justifyItems:'center',
+            overflow:'hidden'
         },
         header:{
             fontFamily: 'Times New Roman',
@@ -26,7 +28,8 @@ let AboutUs = ()=>{
             height:'40vh',
             placeContent:'center',
             animation: 'x 2.5s',
-            animationName: Radium.keyframes(rubberBand, 'rubberBand')
+            animationName: Radium.keyframes(flash, 'flash'),
+            color:"#1ca9e4"
         },
         footer:{
             position:'absolute',
@@ -41,15 +44,27 @@ let AboutUs = ()=>{
             marginLeft:'10px',
             marginRight:'10px',
             fontSize:'25px'
+        },
+        bg:{
+            zIndex:'-1',
+            marginBottom:'-100%',
+            inlineSize:'-webkit-fill-available'
+
         }
     }
     return(
         <div style={style.main}>
+            <div style={style.bg}>
+                <img src={bg} alt='backgroundImg' width="100%"/>
+            </div>
             <Typography style={style.header} variant="h4" color='primary'>Covid-19 Tracking for World and India</Typography>
                 <StyleRoot>
                     <div style={style.cards}>
-                        <Typography variant="h5" color='textPrimary'>Creator : Umesh Malik</Typography>
-                        <Typography variant='h5'>MERN Stack Developer</Typography>
+                        <Typography variant="h5"><Typography variant='h5' style={{color:"coral"}}>Creator :</Typography><u> Umesh Malik</u></Typography>
+                        <Typography variant='h5' style={{textDecoration:'underline'}}>MERN Stack Developer</Typography>
+                    </div>
+                    <div style={style.cards}>
+                        <Typography variant="h5"> <Typography variant='h5' style={{color:"coral"}}>Technology used:</Typography> ReactJS</Typography>
                     </div>
                 </StyleRoot>
             <footer style={style.footer}>
