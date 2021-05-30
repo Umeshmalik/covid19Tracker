@@ -43,7 +43,7 @@ let AboutUs = ()=>{
         <div style={style.main}>
             <Typography style={style.header} variant="h4" color='primary'>Covid-19 Tracking for World and India</Typography>
             <div style={style.cards}>
-                <AboutCard name="Umesh Malik"/>
+                {/* <AboutCard name="Umesh Malik"/> */}
                 {/* <AboutCard name="Mukul"/> */}
             </div>
             <footer style={style.footer}>
