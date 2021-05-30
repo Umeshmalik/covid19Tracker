@@ -21,7 +21,12 @@ let AboutUs = ()=>{
             maxHeight:'90vh'
         },
         cards:{
-            display:'flex'
+            display:'flex',
+            flexFlow:'column wrap',
+            height:'40vh',
+            placeContent:'center',
+            animation: 'x 2.5s',
+            animationName: Radium.keyframes(rubberBand, 'rubberBand')
         },
         footer:{
             position:'absolute',
@@ -41,9 +46,12 @@ let AboutUs = ()=>{
     return(
         <div style={style.main}>
             <Typography style={style.header} variant="h4" color='primary'>Covid-19 Tracking for World and India</Typography>
-            <div style={style.cards}>
-              
-            </div>
+                <StyleRoot>
+                    <div style={style.cards}>
+                        <Typography variant="h5" color='textPrimary'>Creator : Umesh Malik</Typography>
+                        <Typography variant='h5'>MERN Stack Developer</Typography>
+                    </div>
+                </StyleRoot>
             <footer style={style.footer}>
                 <StyleRoot>
                     <div style={style.fadeIn}>
