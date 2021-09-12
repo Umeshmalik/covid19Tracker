@@ -1,92 +1,130 @@
-import React,{Component}  from 'react';
-import { Paper, TableContainer,Table, TableHead, TableRow,TableCell, TableBody} from '@material-ui/core';
-import Countup from 'react-countup';
+import React, { Component, createRef} from 'react';
+import axios from 'axios';
+import { territoryList } from './constants/TerritoryList';
+import { get } from 'lodash';
+import { DataGrid } from "@material-ui/data-grid";
+import { CircularProgress } from '@material-ui/core';
 
 
-class Tab extends Component{
-    constructor(props){
+class Tab extends Component {
+    constructor(props) {
         super(props)
         this.state = {
-            lists : [],
-          }
+            lists: [],
+            index: 0,
+
+        }
+        this.index = createRef();
     }
 
     async componentDidMount() {
-        fetch("https://api.covid19india.org/data.json").then(
-          res =>{
-            res.json().then(
-              data=>{
-                this.setState({lists : data.statewise}) 
-                // console.log(data);
-            })
-          })
-      }
-
-    render(){
-    let style = {
-        main:{
-            display:'flex',
-            justifyContent:'center',
-            padding:'4%'
-        },
-        table :{
-            minWidth:350,
-        },
-        tableHead :{
-            background: '#9eeeee'
-        }
-    }  
-
-    return(
-        
-        <div style={style.main}>
-            
-            <TableContainer component={Paper}>
-                <Table style={style.table} aria-label="simple table">
-                    <TableHead style={style.tableHead}>
-                        <TableRow>
-                            <TableCell align='center'>S.No.</TableCell>
-                            <TableCell align='center'>States</TableCell>
-                            <TableCell align='center'>Confirmed</TableCell>
-                            <TableCell align='center'>Active</TableCell>
-                            <TableCell align='center'>Recovered</TableCell>
-                            <TableCell align='center'>Deaths</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody key="tableBody">
-                    {
-                        this.state.lists.map((ele, index)=>{
-                        if(index === 0 || index === 31){
-                            return(
-                                <TableRow key ={index}></TableRow>
-                            )
+        const {
+            data
+        } = await axios.get('https://data.covid19india.org/v4/min/data.min.json')
+        // this.setState({lists : data})
+        this.index.current = 0;
+        Object.entries(data).map(([key, value]) => {
+            if (key === 'TT');
+            else {
+                key = territoryList[territoryList.findIndex(values => values.codeName === key)]
+                const name = get(key, 'name')
+                this.setState({
+                    lists: [
+                        ...this.state.lists,
+                        {
+                            id: this.index.current++ + 1,
+                            territory: name,
+                            confirmed: parseInt(value['total'].confirmed),
+                            active: parseInt(value['total'].confirmed - value['total'].deceased - value['total'].recovered),
+                            deceased: parseInt(value['total'].deceased),
+                            recovered: parseInt(value['total'].recovered)
                         }
-                        return(
-                            <TableRow key={index}>
-                                { index > 31 &&(
-                                        <TableCell align='center'>{index-1}</TableCell>
-                                    )
-                                }
-                                {
-                                     index < 31 &&(
-                                        <TableCell align='center'>{index}</TableCell>
-                                    )
-                                }
-                                <TableCell align='center'>{ele.state}</TableCell>
-                                <TableCell align='center'><Countup start = {0} end = {parseInt(ele.confirmed)} duration= {3} separator = ","/></TableCell>
-                                <TableCell align='center'><Countup start = {0} end = {parseInt(ele.active)} duration= {3} separator = ","/></TableCell>
-                                <TableCell align='center'><Countup start = {0} end = {parseInt(ele.recovered)} duration= {3} separator = ","/></TableCell>
-                                <TableCell align='center'><Countup start = {0} end = {parseInt(ele.deaths)} duration= {3} separator = ","/></TableCell>
-                            </TableRow>
-                         )
-                        })
-                    }
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
-    )
-}
+                    ]
+                })
+            }
+            return null;
+        })
+    }
+
+    handeler(val) {
+        console.log(val)
+    }
+
+    render() {
+        let style = {
+            main: {
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '4%',
+                height: 1000,
+                width: "100%"
+            },
+            table: {
+                minWidth: 350,
+            },
+            tableHead: {
+                background: '#9eeeee'
+            }
+        }
+
+        const columns = [{
+                field: "id",
+                headerName: "ID",
+                width: 100
+            },
+            {
+                field: "territory",
+                headerName: "Territory",
+                editable: false,
+                width: 200
+            },
+            {
+                field: "confirmed",
+                headerName: "Confirmed",
+                type: "number",
+                editable: false,
+                width: 150
+            },
+            {
+                field: "active",
+                headerName: "Active",
+                type: "number",
+                editable: false,
+                width: 150
+            },
+            {
+                field: "deceased",
+                headerName: 'Deceased',
+                type: 'number',
+                editable: false,
+                width: 150
+            },
+            {
+                field: 'recovered',
+                headerName: 'Recovered',
+                type: 'number',
+                editable: false,
+                width: 150
+
+            }
+        ];
+
+        return (
+
+            <> 
+            {
+                this.state.lists.length === 0 && <CircularProgress/>
+            }
+            {
+                this.state.lists.length !== 0 && <div style = {style.main}>
+                <DataGrid
+                rows = { this.state.lists}
+                columns = { columns }
+                onCellClick = { this.handler }
+                /> </div>
+            } </>
+        )
+    }
 }
 
 export default Tab;

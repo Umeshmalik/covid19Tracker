@@ -8,7 +8,7 @@ export let Con = ({data:{confirmed}}) =>{
     let val = confirmed.value
     return(
         <span style={{color:'orange' ,textDecoration:'underline'}}>
-            <Countup start = {0} end = {val} duration= {2} separator = ","/>
+            <Countup start = {0} end = {parseInt(val)} duration= {2} separator = ","/>
         </span>
     )
 }
@@ -29,7 +29,7 @@ export let Death = ({data:{deaths}}) =>{
     let val = deaths.value
     return(
         <span style={{color:'red', textDecoration:'underline',textDecorationStyle:'solid'}}>
-            <Countup start = {0} end = {val} duration= {2} separator = ","/>
+            <Countup start = {0} end = {parseInt(val)} duration= {2} separator = ","/>
         </span>
     )
 }

@@ -1,7 +1,7 @@
 import  React,{Component}  from 'react';
 import { Typography } from '@material-ui/core';
 import { fetchData } from "../serv/api";
-import {Con,Dat, Death} from './test/Date';
+import {Con,Dat, Death} from './helper/Date';
 
 class Home extends Component{
     constructor(props){

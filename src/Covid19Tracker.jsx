@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core';
 import AboutUs from './comp/AboutUs';
 import Home from './comp/Home';
 import { useHistory,Route } from 'react-router-dom';
-import VaccineTracker from './comp/VaccineTracker';
 import Radium, {StyleRoot} from 'radium';
 import { fadeIn} from 'react-animations';
 import Confetti from 'react-confetti'
@@ -92,14 +91,13 @@ let Covid19Tracker = () =>{
             <Route exact path='/World' component={App}></Route>
             <Route exact path='/India' component={India}></Route>
             <Route exact path='/AboutUs' component={AboutUs}></Route>
-            <Route exact path='/Vaccine-Tracker' component={VaccineTracker}></Route>
             <Route exact path='/' component={Home}></Route>
-            <StyleRoot>
+            {/* <StyleRoot>
                 <div  className={contain.fadeIn} onClick={poper}>
                     Made with <img alt ='emoji'src='https://codingclub.tech/static/icons/heart.gif' height='45px'/> 
                     in <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/joypixels/275/flag-india_1f1ee-1f1f3.png" alt="indian flag" height='50px' title='india'/>  
                 </div>
-            </StyleRoot>
+            </StyleRoot> */}
         </div>
     )
 }

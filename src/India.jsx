@@ -6,30 +6,33 @@ import Tab from './comp/Table';
 import { CircularProgress } from '@material-ui/core';
 import Radium, {StyleRoot} from 'radium';
 import { fadeIn} from 'react-animations'
+import axios from "axios";
 
 class India extends Component{
     constructor(props) {
         super(props)
         this.state = {
           lists: [],
-          confirmed : ' ',
-          active : '',
-          recovered : '',
-          deaths : '',
+          confirmed : 0,
+          active : 0,
+          recovered : 0,
+          deaths : 0,
           lastupdatedtime : ''
         }
       }
       async componentDidMount() {
-        fetch("https://api.covid19india.org/data.json").then(
-          res =>{
-            res.json().then(
-              data=>{
-                this.setState({lists : data.statewise})
-                  this.setState({confirmed : parseInt(this.state.lists[0].confirmed) ,active : parseInt(this.state.lists[0].active), deaths : parseInt(this.state.lists[0].deaths) ,recovered : parseInt(this.state.lists[0].recovered), lastupdatedtime : this.state.lists[0].lastupdatedtime })
-                }
-            )
-          }
-        )
+        const { data } = await axios.get('https://data.covid19india.org/v4/min/data.min.json');
+
+      this.setState({lists : data.statewise})
+      this.setState({
+        confirmed : parseInt( data['TT']['total'].confirmed) ,
+        deaths : parseInt(data['TT']['total'].deceased), 
+        recovered : parseInt(data['TT']['total'].recovered), 
+        lastupdatedtime : data['TT']['meta'].last_updated 
+      })
+      this.setState({
+        active : parseInt(this.state.confirmed - this.state.deaths - this.state.recovered)
+      })
       }
 
     render(){
@@ -77,7 +80,8 @@ class India extends Component{
                 {
               this.state.deaths !== '' &&(
                 <div>
-                <Grid style = {style.grid}>
+                { this.state.active !== 0 &&
+                  <Grid style = {style.grid}>
                     <Cards
                       cardTitle = "Total Cases in India"
                       val = {this.state.confirmed}
@@ -107,6 +111,7 @@ class India extends Component{
                       dis = {true}
                     />
                 </Grid>
+                }
                 <Tab />
               </div>
                   )}
